@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions>
+<api xmlns="http://ws.apache.org/ns/synapse"
+     name="admin--tempAPI1"
+     context="/api5916/1.0.0"
+     version="1.0.0"
+     version-type="context">
+   <resource methods="PUT" url-mapping="/*" faultSequence="fault">
+      <inSequence>
+       <log level="custom">
+            <property name="STATUS" value="==========In-API-CHUNKING-DISABLED-API============="/>            
+        </log>     
+      
+      <property name="DISABLE_CHUNKING" value="true" scope="axis2" />
+         <property name="api.ut.backendRequestTime"
+                   expression="get-property('SYSTEM_TIME')"/>
+                   
+        <log level="custom">
+            <property name="STATUS" value="==========Before-service-call============="/>            
+        </log>  
+         
+              <payloadFactory media-type="json">
+                <format>{ "msg":"Hello"}</format>
+                <args/>
+            </payloadFactory>
+            <respond/>
+                  
+      </inSequence>
+      <outSequence>
+         <class name="org.wso2.carbon.apimgt.gateway.handlers.analytics.APIMgtResponseHandler"/>
+         <send/>
+      </outSequence>
+   </resource>
+</api>
+
+</definitions>
